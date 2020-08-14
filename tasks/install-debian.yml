@@ -25,6 +25,7 @@
     repo: deb {{ telegraf_influxdata_base_url }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ telegraf_install_version }}
     state: present
   when: telegraf_install_url is not defined or telegraf_install_url == None
+  ignore_errors: yes
 
 - name: Install Telegraf packages [Debian/Ubuntu]
   apt:

@@ -27,4 +27,9 @@
   assert:
     that:
       - "telegraf_service_status.rc == 0"
-  when: telegraf_start_service
+  when: telegraf_start_service and not ansible_check_mode
+
+- name: assert running
+  debug:
+    msg: "not checking that telegraf is running"
+  when: not telegraf_start_service or ansible_check_mode
