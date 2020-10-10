@@ -19,7 +19,7 @@
     backup: yes
     owner: telegraf
     group: telegraf
-    mode: 0744
+    mode: 0640
   when: telegraf_template_configuration
   # If config changes, restart telegraf and confirm it remained running
   notify:
@@ -59,6 +59,15 @@
     dest: /etc/systemd/system/telegraf.service.d/override.conf
   when: telegraf_runas_user != "telegraf" and not telegraf_sysvinit_script.stat.exists
   register: telegraf_unit_file_updated
+
+- name: deploy sudo permissions file
+  template:
+    src: etc/sudoers.d/80-telegraf
+    dest: /etc/sudoers.d/80-telegraf
+    owner: root
+    group: root
+    mode: 0440
+    backup: yes
 
 - name: Reload systemd configuration [systemd]
   systemd:
